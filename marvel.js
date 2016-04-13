@@ -1,4 +1,5 @@
 import http from 'http';
+import httpProxy from 'http-proxy';
 import url from 'url';
 import crypto from 'crypto';
 
@@ -41,11 +42,22 @@ let server = http.createServer(function(req, res) {
    *
    * 4. You should be able to run npm run marvel and visit localhost:8000
    *    in your browser. At /v1/public/characters?name=Falcon you should
-   *    see data for Falcon.
+   *    see data for Falcon.s
    */
 
-   let data = "";
+   parsedUrl.query.apikey = "0fd87f40d6dd1419e4153fe1a1c9cf04";
+   // make ts
+   let ts = +new Date();
+   // set ts on parsedUrl
+   parsedUrl.query.ts = ts;
+   // fill in data
+   let data = ts + "ea79758e117ccbcb31838b7a6401ee5a8be932900fd87f40d6dd1419e4153fe1a1c9cf04";
    let hash = crypto.createHash('md5').update(data).digest("hex");
+   // set hash on parsedUrl
+   parsedUrl.query.hash = hash;
+
+   parsedUrl.search = null;
+   req.url = url.format(parsedUrl);
 
    proxy.web(req, res, {
      target: 'http://gateway.marvel.com:80'

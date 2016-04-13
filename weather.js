@@ -7,6 +7,9 @@ let proxy = httpProxy.createProxyServer({});
 let server = http.createServer(function(req, res) {
 
     let parsedUrl = url.parse(req.url, true);
+    parsedUrl.query.APPID = "216fd9a063b72173883f0ddeeeb951f4";
+    parsedUrl.search = null;
+    req.url = url.format(parsedUrl);
 
     /**
      * We want to proxy our requests to Open Weather Map's API,
@@ -23,7 +26,7 @@ let server = http.createServer(function(req, res) {
      *
      *    This is how we apply the changes we made
      *
-     * 4. You should be able to run npm run nasa and visit localhost:8000
+     * 4. You should be able to run npm run weather and visit localhost:8000
      *    in your browser. At /planetary/apod you should see data for the
      *    Astronomy Picture of the Day.
      */
